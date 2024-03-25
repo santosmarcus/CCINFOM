@@ -12,6 +12,10 @@ MEMBER 4: Tumabaga, Myrine
 import java.sql.*;
 import java.util.Scanner;
 
+
+// will put method for doing products since may choices rin sya. 
+
+
 public class App {
     public static void main(String[] args){
 
@@ -30,16 +34,41 @@ public class App {
         System.out.print("Enter choice: ");
         int inputForMainMenu = sc.nextInt();
         if (inputForMainMenu == 1){
-            System.out.println("1");
+                System.out.println("1. Products");
+                System.out.println("2. Customers");
+                System.out.println("3. Employee");
+                System.out.println("4. Office");
+                int recordsInput = sc.nextInt();
+                switch (recordsInput) {
+                    case 1:
+                        System.out.println("case 1");
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    default:
+                        stopper = 0;
+                }
+
         }
         else if(inputForMainMenu == 2){
-            System.out.println("2");
+                System.out.println("2");
         }
         else{
-            System.out.println("Invalid choice");
+                System.out.println("Invalid choice");
         }
 
     }
+
+
+
+
     /* 
         try{
             System.out.println("Customer Number" + "  ---  " +  "Customer Name" + "  ---  " + "Contact Last Name");

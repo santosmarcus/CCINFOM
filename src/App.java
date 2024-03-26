@@ -30,7 +30,8 @@ public class App {
 
         System.out.println("===========================\n");
         System.out.println("1. Records Management");
-        System.out.println("2. Transaction Management\n");
+        System.out.println("2. Transaction Management");
+        System.out.println("3. Exit Program\n");
         System.out.println("===========================");
         
         System.out.print("Enter choice:");
@@ -49,9 +50,9 @@ public class App {
                     case 1: //products
                         System.out.println("===========================\n");
                         System.out.println("1. Create a new Product");
-                        System.out.println("2. Update a record of Product");
-                        System.out.println("3. Delete a record of Product");
-                        System.out.println("4. View Product and Order List\n");
+                        System.out.println("2. Update a record of a Product");
+                        System.out.println("3. Delete a record of a Product");
+                        System.out.println("4. View a Product and Order List\n");
                         System.out.println("===========================");
                         System.out.print("Enter choice:");
                         int productsInput = sc.nextInt();
@@ -63,30 +64,104 @@ public class App {
                             case 2: // Update record of Product
                                 break;
                             
-                            case 3: //delete a record of produict
+                            case 3: //delete a record of product
+                                break;
+                            case 4: // View product and order list given a  specific year
+                                break;
+                            default:
+                               break; 
+                            }
+                        break;
+                    case 2: // customers 
+                    // since this is not mine anymore, edit the menu as you please
+                        System.out.println("===========================\n");
+                        System.out.println("1. Create a new Customer");
+                        System.out.println("2. Update a record of Customer");
+                        System.out.println("3. Delete a record of Customer");
+                        System.out.println("4. View a Customer and order list of Customer\n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice:");
+                        int customersInput = sc.nextInt();
+                        switch (customersInput) {
+                            case 1:
+                                
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            default:
+                                break;
+                          
                         }
                         break;
-                    case 2:
-
+                    case 3: // employee 
+                    // since this is not mine anymore, edit the menu as you please
+                        System.out.println("===========================\n");
+                        System.out.println("1. Create a new Employee");
+                        System.out.println("2. Update a record of Employee");
+                        System.out.println("3. Delete a record of Employee");
+                        System.out.println("4. View an Employee and Customer list \n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice:");
+                        int employeesInput = sc.nextInt();
+                        switch (employeesInput) {
+                            case 1:
+                                
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            default:
+                                break;
+                            }
                         break;
-                    case 3:
-
-                        break;
-                    case 4:
-
+                    case 4: //office
+                    // since this is not mine anymore, edit the menu as you please
+                        System.out.println("===========================\n");
+                        System.out.println("1. Create a new Office");
+                        System.out.println("2. Update a record of an Office");
+                        System.out.println("3. Delete a record of an Office");
+                        System.out.println("4. View an Office and list of Employees \n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice:");
+                        int officesInput = sc.nextInt();
+                        switch (officesInput) {
+                            case 1:
+                                
+                                break;
+                        
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            default:
+                                break;
+                            }
                         break;
                     default:
-                        stopper = 0;
+                        break;
                 }
 
         }
         else if(inputForMainMenu == 2){
                 System.out.println("2");
         }
+        else if(inputForMainMenu == 3){
+                System.out.println("Ending program...");
+                stopper = 0;
+        }
         else{
                 System.out.println("Invalid choice");
         }
-        }
+        }// end of while loop
     sc.close();
 
 

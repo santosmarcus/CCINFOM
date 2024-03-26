@@ -18,13 +18,14 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args){
-
+    
     System.out.println("DBSALES JAVA TERMINAL APP");
     System.out.println("CCINFO-007\n");
     Scanner sc = new Scanner(System.in);  
-
+   
     int stopper = 1;
     while(stopper == 1){
+     
 
         System.out.println("===========================\n");
         System.out.println("1. Records Management");
@@ -41,7 +42,7 @@ public class App {
                 int recordsInput = sc.nextInt();
                 switch (recordsInput) {
                     case 1:
-                        System.out.println("case 1");
+                        App_Methods.method();
                         break;
                     case 2:
 
@@ -63,13 +64,11 @@ public class App {
         else{
                 System.out.println("Invalid choice");
         }
-
-    }
-
-
+        }
+    
 
 
-    /* 
+/* 
         try{
             System.out.println("Customer Number" + "  ---  " +  "Customer Name" + "  ---  " + "Contact Last Name");
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -81,8 +80,8 @@ public class App {
             while(rs.next())
             System.out.println(rs.getInt(1) + "  ---  " + rs.getString(2)+"  ---  "+rs.getString(3));
             con.close();
-        }catch(Exception e){System.out.println(e);}*/
-
+        }catch(Exception e){System.out.println(e);}
+*/
         
 
     

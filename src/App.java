@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 
 public class App {
+
     public static void main(String[] args){
     
     System.out.println("DBSALES JAVA TERMINAL APP");
@@ -32,17 +33,38 @@ public class App {
         System.out.println("2. Transaction Management\n");
         System.out.println("===========================");
         
-        System.out.print("Enter choice: ");
+        System.out.print("Enter choice:");
         int inputForMainMenu = sc.nextInt();
+        System.out.println("===========================");
         if (inputForMainMenu == 1){
-                System.out.println("1. Products");
+                System.out.println("\n1. Products");
                 System.out.println("2. Customers");
                 System.out.println("3. Employee");
-                System.out.println("4. Office");
+                System.out.println("4. Office\n");
+                System.out.println("===========================");
+                System.out.print("Enter choice:");
+
                 int recordsInput = sc.nextInt();
                 switch (recordsInput) {
-                    case 1:
-                        App_Methods.method();
+                    case 1: //products
+                        System.out.println("===========================\n");
+                        System.out.println("1. Create a new Product");
+                        System.out.println("2. Update a record of Product");
+                        System.out.println("3. Delete a record of Product");
+                        System.out.println("4. View Product and Order List\n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice:");
+                        int productsInput = sc.nextInt();
+                        switch (productsInput) {
+                            case 1: // Create new product
+                            
+                                break;
+                        
+                            case 2: // Update record of Product
+                                break;
+                            
+                            case 3: //delete a record of produict
+                        }
                         break;
                     case 2:
 
@@ -65,7 +87,7 @@ public class App {
                 System.out.println("Invalid choice");
         }
         }
-    
+    sc.close();
 
 
 /* 

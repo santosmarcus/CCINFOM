@@ -23,7 +23,8 @@ public class App {
     System.out.println("DBSALES JAVA TERMINAL APP");
     System.out.println("CCINFO-007\n");
     Scanner sc = new Scanner(System.in);  
-   
+    App_Methods am = new App_Methods();
+
     int stopper = 1;
     while(stopper == 1){
 
@@ -68,7 +69,7 @@ public class App {
                         switch (productsInput) {
                             case 1: // Create new product
 
-
+                            
                             
                             
                                 break;
@@ -284,20 +285,7 @@ public class App {
     sc.close();
 
 
-/* 
-        try{
-            System.out.println("Customer Number" + "  ---  " +  "Customer Name" + "  ---  " + "Contact Last Name");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/dbsales","root","12345"
-            );
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from customers");
-            while(rs.next())
-            System.out.println(rs.getInt(1) + "  ---  " + rs.getString(2)+"  ---  "+rs.getString(3));
-            con.close();
-        }catch(Exception e){System.out.println(e);}
-*/
+
         
 
     

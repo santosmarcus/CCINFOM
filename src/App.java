@@ -9,12 +9,7 @@ MEMBER 4: Tumabaga, Myrine
 
  */
 
-import java.sql.*;
 import java.util.Scanner;
-
-
-// will put method for doing products since may choices rin sya. 
-
 
 public class App {
 
@@ -68,10 +63,7 @@ public class App {
                         int productsInput = sc.nextInt();
                         switch (productsInput) {
                             case 1: // Create new product
-
-                            
-                            
-                            
+                                App_Methods.product_insert();
                                 break;
                         
                             case 2: // Update record of Product
@@ -113,7 +105,7 @@ public class App {
                         int customersInput = sc.nextInt();
                         switch (customersInput) {
                             case 1:
-                                
+
 
 
                                 break;

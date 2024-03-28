@@ -33,7 +33,7 @@ public class App {
         System.out.println("===========================");
         
 
-        System.out.print("Enter choice:");
+        System.out.print("Enter choice: ");
         int inputForMainMenu = sc.nextInt();
         System.out.println("===========================");
 
@@ -46,7 +46,7 @@ public class App {
                 System.out.println("3. Employee");
                 System.out.println("4. Office\n");
                 System.out.println("===========================");
-                System.out.print("Enter choice:");
+                System.out.print("Enter choice: ");
 
                 int recordsInput = sc.nextInt();
                 switch (recordsInput) {
@@ -59,7 +59,7 @@ public class App {
                         System.out.println("3. Delete a record of a Product");
                         System.out.println("4. View a Product and Order List\n");
                         System.out.println("===========================");
-                        System.out.print("Enter choice:");
+                        System.out.print("Enter choice: ");
                         int productsInput = sc.nextInt();
                         switch (productsInput) {
                             case 1: // Create new product
@@ -101,7 +101,7 @@ public class App {
                         System.out.println("3. Delete a record of Customer");
                         System.out.println("4. View a Customer and order list of Customer\n");
                         System.out.println("===========================");
-                        System.out.print("Enter choice:");
+                        System.out.print("Enter choice: ");
                         int customersInput = sc.nextInt();
                         switch (customersInput) {
                             case 1:
@@ -144,7 +144,7 @@ public class App {
                         System.out.println("3. Delete a record of Employee");
                         System.out.println("4. View an Employee and Customer list \n");
                         System.out.println("===========================");
-                        System.out.print("Enter choice:");
+                        System.out.print("Enter choice: ");
                         int employeesInput = sc.nextInt();
                         switch (employeesInput) {
                             case 1:
@@ -172,7 +172,7 @@ public class App {
                         System.out.println("3. Delete a record of an Office");
                         System.out.println("4. View an Office and list of Employees \n");
                         System.out.println("===========================");
-                        System.out.print("Enter choice:");
+                        System.out.print("Enter choice: ");
                         int officesInput = sc.nextInt();
                         switch (officesInput) {
                             case 1:
@@ -215,7 +215,7 @@ public class App {
                 System.out.println("\n1. Orders management");
                 System.out.println("2. Payment management\n");
                 System.out.println("===========================");
-                System.out.print("Enter choice:");
+                System.out.print("Enter choice: ");
                 int inputForTransanction = sc.nextInt();
                 switch (inputForTransanction) {
                     case 1: //orders
@@ -244,7 +244,7 @@ public class App {
                 System.out.println("\n1. Sales Report for different sales per status");
                 System.out.println("2. Sales Report for different sales per product\n");
                 System.out.println("===========================");
-                System.out.print("Enter choice:");
+                System.out.print("Enter choice: ");
                 int inputForReports = sc.nextInt();
                 switch (inputForReports) {
                     case 1:

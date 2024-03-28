@@ -69,7 +69,7 @@ public class App {
                             case 2: // Update record of Product
 
                                 App_Methods.product_update();
-
+                                System.out.println("adasd");
 
                                 break;
                             

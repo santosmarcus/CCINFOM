@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.Scanner;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 
 public class App_Methods {
     static Scanner sc = new Scanner(System.in);
@@ -57,7 +59,54 @@ public class App_Methods {
         } catch(Exception e){System.out.println(e);}
 
 }   // end of Product
+    public static void product_update(){
 
+        
+        Statement st_for_noOfCols = null;
+        ResultSet rs_for_noOfCols = null;
+        ResultSet rs_for_query = null;
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/dbsales","root","12345"
+            );
+
+        String query_for_cols = "SELECT * FROM products";
+        
+        st_for_noOfCols = con.createStatement();
+        rs_for_noOfCols = st_for_noOfCols.executeQuery(query_for_cols);
+
+        ResultSetMetaData rsmd = (ResultSetMetaData) rs_for_noOfCols.getMetaData();
+        int no_of_cols = rsmd.getColumnCount();
+        
+        System.out.println(no_of_cols);
+
+
+        String query_test = "SELECT * FROM products WHERE productCode = ?";
+        PreparedStatement ps_stmt = con.prepareStatement(query_test);
+        
+        System.out.println("Enter product code");
+        String product_code = sc.next();
+        ps_stmt.setString(1, product_code);
+            rs_for_query = ps_stmt.executeQuery();
+
+       while(rs_for_query.next()){
+            String get_code = rs_for_query.getString("productCode");
+            String get_name = rs_for_query.getString("productName");
+            System.out.println("This is product code got: " + get_code);
+            System.out.println("This is product name got: " + get_name);
+       }
+
+
+
+
+        
+
+        } catch(Exception e){System.out.println(e);}
+
+
+    }
 
 
      {

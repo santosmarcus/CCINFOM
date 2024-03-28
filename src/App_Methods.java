@@ -61,10 +61,11 @@ public class App_Methods {
 }   // end of Product
     public static void product_update(){
 
-        
+       // Statement stmt_for_query = null;
         Statement st_for_noOfCols = null;
         ResultSet rs_for_noOfCols = null;
         ResultSet rs_for_query = null;
+
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -85,19 +86,26 @@ public class App_Methods {
 
         String query_test = "SELECT * FROM products WHERE productCode = ?";
         PreparedStatement ps_stmt = con.prepareStatement(query_test);
-        
+       
         System.out.println("Enter product code");
         String product_code = sc.next();
         ps_stmt.setString(1, product_code);
-            rs_for_query = ps_stmt.executeQuery();
+        rs_for_query = ps_stmt.executeQuery();
 
+            //if statement for found record
+
+
+
+
+            // produces the entire record
        while(rs_for_query.next()){
             String get_code = rs_for_query.getString("productCode");
             String get_name = rs_for_query.getString("productName");
             System.out.println("This is product code got: " + get_code);
             System.out.println("This is product name got: " + get_name);
-       }
 
+       }
+       
 
 
 

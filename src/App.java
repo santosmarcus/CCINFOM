@@ -64,8 +64,8 @@ public class App {
                         switch (productsInput) {
                             case 1: // Create new product
                                 App_Methods.product_insert();
+
                                 break;
-        
                             case 2: // Update record of Product
 
                                 App_Methods.product_update();

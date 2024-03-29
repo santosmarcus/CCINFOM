@@ -6,24 +6,25 @@ public class App_Methods {
 
 
     public static void product_insert(){
-  
-        System.out.println("Enter product id: ");
+        int stopper = 1;
+        do{
+        System.out.print("Enter product id: ");
         String product_code = sc.next();
-        System.out.println("Enter product name: ");
+        System.out.print("Enter product name: ");
         String product_name = sc.next();
-        System.out.println("Enter product line: ");
+        System.out.print("Enter product line: ");
         String product_line = sc.next();
-        System.out.println("Enter product scale: ");
+        System.out.print("Enter product scale: ");
         String product_scale = sc.next();
-        System.out.println("Enter product vendor: ");
+        System.out.print("Enter product vendor: ");
         String product_vendor = sc.next();
-        System.out.println("Enter product description: ");
+        System.out.print("Enter product description: ");
         String product_desc = sc.next();
-        System.out.println("Enter product quantity in stock: ");
+        System.out.print("Enter product quantity in stock: ");
         int product_stock = sc.nextInt();
-        System.out.println("Enter product price: ");
+        System.out.print("Enter product price: ");
         double product_price = sc.nextDouble();
-        System.out.println("Enter product MSRP: ");
+        System.out.print("Enter product MSRP: ");
         double product_MSRP = sc.nextDouble();
 
 
@@ -48,13 +49,29 @@ public class App_Methods {
 
          int x = stmt.executeUpdate();
          if(x > 0){
-            System.out.println("Successfully inserted\n");
+            System.out.println("\nSuccessfully inserted\n");
          }
          else{
             System.out.println("Not inserted\n");
          }
          con.close();
-        } catch(Exception e){System.out.println(e);}
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        //    System.out.println("\nError. New record not inserted. productLine is referenced");
+
+        }
+
+        System.out.print("Insert another record (Y/N): ");
+        char insert_loop = sc.next().charAt(0);
+
+        if(insert_loop == 'n' || insert_loop == 'N'){
+            stopper = 0;
+        }
+        else{
+            System.out.println();
+        }
+
+    }while(stopper == 1);
 
 }   // end of Product Insert
 
@@ -172,6 +189,7 @@ public class App_Methods {
 
                             }
                             else{
+                                System.out.println();
                                update_stopper = 0;
                             }
                         }
@@ -198,9 +216,65 @@ public class App_Methods {
         }catch(Exception e){System.out.println(e);}
             }
 
+    public static void product_delete(){
+        int stopper = 1;
+        do{
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/dbsales","root","12345"
+            );
+            
+            System.out.print("Enter column to search for value of deletion: ");
+            String col_name = sc.next();
+   
+            System.out.print("Enter value to delete: ");
+            String value = sc.next();
+
+            String delete_query = "DELETE FROM products WHERE " + col_name + "= ?";
+            PreparedStatement ps_delete = con.prepareStatement(delete_query);
 
 
+            ps_delete.setString(1, value);
+
+            int rows_affected = ps_delete.executeUpdate();
+
+            if(rows_affected > 0){
+                System.out.println("Record " + value +" deleted successfully\n");
+            }
+
+            
+            else{
+                System.out.println("Record does not exist or cannot be deleted\n");
+            }
+
+            System.out.println("Do you want to delete another record?(Y/N):  ");
+            char delete_loop = sc.next().charAt(0);
+
+            if(delete_loop == 'n' || delete_loop == 'N'){
+                stopper = 0;
+            }
+
+
+            con.close();
+
+    } catch(SQLException e){
+
+            if(e.getErrorCode() == 1451){
+                System.out.println("Error: Cannot delete record because it is being used as a reference by other records");
+            }
+
+
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+    }while(stopper == 1);
+}
      
+
+
+
+
         {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -220,6 +294,7 @@ public class App_Methods {
         } catch(Exception e){System.out.println(e);}
         }
     
+
 
 }
 

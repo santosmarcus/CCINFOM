@@ -63,6 +63,7 @@ public class App {
                         int productsInput = sc.nextInt();
                         switch (productsInput) {
                             case 1: // Create new product
+
                                 App_Methods.product_insert();
 
                                 break;
@@ -70,13 +71,11 @@ public class App {
 
                                 App_Methods.product_update();
                                 
-
                                 break;
                             
                             case 3: //delete a record of product
 
-
-
+                                App_Methods.product_delete();
 
                                 break;
                             case 4: // View product and order list given a  specific year

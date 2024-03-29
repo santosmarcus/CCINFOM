@@ -271,11 +271,88 @@ public class App_Methods {
     }while(stopper == 1);
 }
      
+    public static void product_view_orderlist(){
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/dbsales","root","12345"
+                );
+
+
+            System.out.print("Enter product code to view: ");
+            String view_code = sc.next();
+           
+
+            String view_record = "SELECT * FROM products WHERE productCode = ?";
+            PreparedStatement view_record_ps = con.prepareStatement(view_record);
+            view_record_ps.setString(1, view_code);
+
+            ResultSet record_rs = view_record_ps.executeQuery();
+
+            while(record_rs.next()){
+                System.out.println("\nProduct code: " + record_rs.getString("productCode"));
+                System.out.println("Product name: " + record_rs.getString("productName"));
+                System.out.println("Product line: " + record_rs.getString("productLine"));
+                System.out.println("Product scale: " + record_rs.getString("productScale"));
+                System.out.println("Product vendor: " + record_rs.getString("productVendor"));
+                System.out.println("Product desc: " + record_rs.getString("productDescription"));
+                System.out.println("Product stock: " + record_rs.getString("quantityInStock"));
+                System.out.println("Product price: " + record_rs.getString("buyPrice"));
+                System.out.println("Product MSRP: " + record_rs.getString("MSRP"));
+                System.out.println();
+            }
+
+            System.out.print("Enter year to view: ");
+            String view_year = sc.next();
+
+            String view_record_given_year = "SELECT od.orderNumber, od.quantityOrdered, od.orderLineNumber, o.orderDate, o.customerNumber FROM products p RIGHT JOIN orderdetails od ON p.productCode = od.productCode "
+                                            + "RIGHT JOIN orders o ON od.orderNumber = o.orderNumber "
+                                            + "WHERE p.productCode = " + "'" + view_code +"'"
+                                            + "AND YEAR(orderDate) = " + view_year;
+
+            PreparedStatement view_record_year = con.prepareStatement(view_record_given_year);
+
+            //view_record_year.setString(1, view_code);
+
+            ResultSet view_given_year_rs = view_record_year.executeQuery();
+
+            if(view_given_year_rs.next()){
+            while (view_given_year_rs.next()) {
+                
+                String orderNumber = view_given_year_rs.getString("od.orderNumber");
+                String quantityOrder = view_given_year_rs.getString("od.quantityOrdered");
+                String orderLineNumber = view_given_year_rs.getString("od.orderLineNumber");
+                String orderDate = view_given_year_rs.getString("o.orderDate");
+                String customerNumber = view_given_year_rs.getString("o.customerNumber");
+
+                System.out.println("\nCustomer: " + customerNumber);
+                System.out.println("Order Number: "+ orderNumber);
+                System.out.println("Quantity Ordered" + quantityOrder);
+                System.out.println("Order Line Number: " + orderLineNumber);
+                System.out.println("Date Order made: " + orderDate + "\n");
+                
+                System.out.println("List generated... going back to main menu\n");
+
+            }
+        }
+            else{
+                System.out.println("No orders made during this year with this product\n");
+            }
+            
+            con.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
 
 
 
 
-        {
+    }
+
+
+
+        {// shows if db is connected or not
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(

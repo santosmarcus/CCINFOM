@@ -361,15 +361,7 @@ public class App_Methods {
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/dbsales","root","12345"
             );
-            con.setAutoCommit(false);
-            // find customer code to make order
-            // loop order
-            // order should be product code
-            // if else at end of loop
-                //complete transaction?
-                    // yes = con.commit
-                    // no = con.rollback
-                 
+            con.setAutoCommit(false);  
           
             int quantity;
             int get_base_quantity;
@@ -433,8 +425,6 @@ public class App_Methods {
 
                                 System.out.println("You have ordered " +quantity+ " of this product");
 
-                              
-                                
                                 System.out.print("Do you want to buy another (Y/N): ");
                                 char y_or_n_loop = sc.next().charAt(0);
                                 if(y_or_n_loop == 'y' || y_or_n_loop == 'Y'){
@@ -462,17 +452,10 @@ public class App_Methods {
                                         System.out.println("Invalid date format");
                                     }
 
-
-
-
-
                                     System.out.print("Any comments on order: ");
                                     sc.nextLine();
                                     String comments = sc.nextLine();
 
-                                    
-
-                                    
                                     System.out.println("\nOrder Transaction ");
                                     // show details of transaction:
                                     String maxOrderNumber = "SELECT MAX(orderNumber) as max_order FROM orders";
@@ -511,70 +494,42 @@ public class App_Methods {
                                         }
 
                                     }
-                                    
-
-                                    
                                 }
-                                
                             }
                             else{
                                 System.out.println("Not enough quantity in stock for order");
                               
                             }
                         }
-
-
-
-
-                            //int row_updated = update_ps.executeUpdate();
-                   
-
                         }
-                        
-
-
 
                     }
                     else{
-                        System.out.println("Product does not exist");
-                    }
-                
-                
-                    
-                
+                        System.out.println("Invalid input, going back to main menu...");
+                        stopper = 0;
+                    }    
 
                 }while(stopper == 1);
             }
-
             else{
                 System.out.println("Customer does not exist\n");
             }
-
-
-
-
-
-
+            con.setAutoCommit(true);
             con.close();
+            
         } catch(SQLException e){System.err.println("SQL Exception:");
         System.err.println("Message: " + e.getMessage());
         System.err.println("SQL State: " + e.getSQLState());
         System.err.println("Error Code: " + e.getErrorCode());
         System.err.println("Stack Trace:");e.printStackTrace();
 } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 
 
 
-
-
-
-
-
-
-    }
+    } // end of create new order
 
         {// shows if db is connected or not
         try{

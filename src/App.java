@@ -18,8 +18,7 @@ public class App {
     System.out.println("DBSALES JAVA TERMINAL APP");
     System.out.println("CCINFO-007\n");
     Scanner sc = new Scanner(System.in);  
-    App_Methods am = new App_Methods();
-
+   
     int stopper = 1;
     while(stopper == 1){
 
@@ -218,7 +217,33 @@ public class App {
                 int inputForTransanction = sc.nextInt();
                 switch (inputForTransanction) {
                     case 1: //orders
+                        System.out.println("\n1. Create a new Order");
+                        System.out.println("2. Update an Order");
+                        System.out.println("3. Update a specific product in an Order");
+                        System.out.println("4. Delete a specific product in an Order\n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice: ");
+                        int order_input = sc.nextInt();
+                        switch (order_input) {
+                            case 1:
+                                App_Methods.order_create();
+                                break;
                         
+                            case 2:
+                                break;
+
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            default:
+                                System.out.println("===========================\n");
+                                System.out.println("Invalid choice. Going back to main menu\n");
+                        }
+
+
+
+
                         break;
                 
                     case 2: //payment

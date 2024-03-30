@@ -9,17 +9,17 @@ public class App_Methods {
         int stopper = 1;
         do{
         System.out.print("Enter product id: ");
-        String product_code = sc.next();
+        String product_code = sc.nextLine();
         System.out.print("Enter product name: ");
-        String product_name = sc.next();
+        String product_name = sc.nextLine();
         System.out.print("Enter product line: ");
-        String product_line = sc.next();
+        String product_line = sc.nextLine();
         System.out.print("Enter product scale: ");
-        String product_scale = sc.next();
+        String product_scale = sc.nextLine();
         System.out.print("Enter product vendor: ");
-        String product_vendor = sc.next();
+        String product_vendor = sc.nextLine();
         System.out.print("Enter product description: ");
-        String product_desc = sc.next();
+        String product_desc = sc.nextLine();
         System.out.print("Enter product quantity in stock: ");
         int product_stock = sc.nextInt();
         System.out.print("Enter product price: ");
@@ -350,7 +350,133 @@ public class App_Methods {
 
     }
 
+    public static void order_create(){
 
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/dbsales","root","12345"
+            );
+            con.setAutoCommit(false);
+            // find customer code to make order
+            // loop order
+            // order should be product code
+            // if else at end of loop
+                //complete transaction?
+                    // yes = con.commit
+                    // no = con.rollback
+                 
+          
+            int quantity;
+
+            System.out.print("Enter customer number: ");
+            int customer_number_input = sc.nextInt();
+
+            String if_customer_exists = "SELECT * FROM orders WHERE customerNumber = " + customer_number_input;
+            
+            PreparedStatement ps_if_customer_exists = con.prepareStatement(if_customer_exists);
+
+            ResultSet if_customer_exists_rs = ps_if_customer_exists.executeQuery();
+
+
+
+            if (if_customer_exists_rs.next()){
+                System.out.println("Customer found\n");
+
+               String customer_code = if_customer_exists_rs.getString("customerNumber");
+
+                System.out.print("Enter product code to buy: ");
+
+                    String product_code= sc.next();
+
+                    String if_productCode_exists = "SELECT * FROM products WHERE productCode = '" + product_code + "'";
+                    PreparedStatement if_productCode_ps = con.prepareStatement(if_productCode_exists);
+                    ResultSet productCode_rs = if_productCode_ps.executeQuery();
+
+                    if(productCode_rs.next()){
+                        System.out.println("Found the product");
+                        String find_name = "SELECT productName FROM products WHERE productCode = '" + product_code + "'";
+                        PreparedStatement find_name_ps = con.prepareStatement(find_name);
+                        ResultSet find_name_rs = find_name_ps.executeQuery();
+                        while(find_name_rs.next()){
+                            String name = find_name_rs.getString("productName");
+                            System.out.println("Product name: "+ name);
+                        }
+
+                        System.out.println("Do you want to buy this product: ");
+                        char y_or_n = sc.next().charAt(0);
+                        if(y_or_n == 'y' || y_or_n == 'Y'){
+
+                            System.out.println("How many: ");
+                            quantity = sc.nextInt();
+
+                            String base_quantity = "SELECT quantityInStock WHERE productCode = " + product_code;
+                            PreparedStatement base_quantity_ps = con.prepareStatement(base_quantity);
+                            ResultSet base_quantity_rs = base_quantity_ps.executeQuery();
+                            int get_base_quantity = base_quantity_rs.getInt("quantityInStock");
+
+
+                            String update_quantity = "UPDATE products SET quantityInStock = quantityInStock - " +quantity +" WHERE productCode = '" +product_code +"'"; 
+                            PreparedStatement update_ps = con.prepareStatement(update_quantity);
+
+
+
+
+                            int row_updated = update_ps.executeUpdate();
+                   
+                            if(row_updated > 0 && ((get_base_quantity - quantity) < get_base_quantity)){
+                                System.out.println("You have ordered " +quantity+ "of this product");
+                            }
+                            else{
+                                System.out.println("Not enough quantity in stock for order");
+                            }
+
+                        }
+                        
+
+
+
+                    }
+                    else{
+                        System.out.println("Product does not exist");
+                    }
+                
+                
+                    
+                
+
+
+            }
+
+            else{
+                System.out.println("Customer does not exist\n");
+            }
+
+
+
+
+
+
+
+        } catch(SQLException e){System.err.println("SQL Exception:");
+        System.err.println("Message: " + e.getMessage());
+        System.err.println("SQL State: " + e.getSQLState());
+        System.err.println("Error Code: " + e.getErrorCode());
+        System.err.println("Stack Trace:");e.printStackTrace();
+} catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+    }
 
         {// shows if db is connected or not
         try{

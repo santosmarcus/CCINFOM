@@ -1,4 +1,8 @@
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class App_Methods {
@@ -368,6 +372,8 @@ public class App_Methods {
                  
           
             int quantity;
+            int get_base_quantity;
+            int stopper = 1;
 
             System.out.print("Enter customer number: ");
             int customer_number_input = sc.nextInt();
@@ -383,8 +389,8 @@ public class App_Methods {
             if (if_customer_exists_rs.next()){
                 System.out.println("Customer found\n");
 
-               String customer_code = if_customer_exists_rs.getString("customerNumber");
-
+               int customer_code = if_customer_exists_rs.getInt("customerNumber");
+                do{
                 System.out.print("Enter product code to buy: ");
 
                     String product_code= sc.next();
@@ -403,33 +409,125 @@ public class App_Methods {
                             System.out.println("Product name: "+ name);
                         }
 
-                        System.out.println("Do you want to buy this product: ");
+                        System.out.print("Do you want to buy this product: ");
                         char y_or_n = sc.next().charAt(0);
                         if(y_or_n == 'y' || y_or_n == 'Y'){
-
-                            System.out.println("How many: ");
+                        
+                            System.out.print("How many: ");
                             quantity = sc.nextInt();
+                            int current_quantity = 0;
 
-                            String base_quantity = "SELECT quantityInStock WHERE productCode = " + product_code;
+                            String base_quantity = "SELECT quantityInStock FROM products WHERE productCode = " + product_code;
                             PreparedStatement base_quantity_ps = con.prepareStatement(base_quantity);
                             ResultSet base_quantity_rs = base_quantity_ps.executeQuery();
-                            int get_base_quantity = base_quantity_rs.getInt("quantityInStock");
-
-
-                            String update_quantity = "UPDATE products SET quantityInStock = quantityInStock - " +quantity +" WHERE productCode = '" +product_code +"'"; 
+                            
+                            
+                            while(base_quantity_rs.next()){
+                            get_base_quantity = base_quantity_rs.getInt("quantityInStock");
+                            
+                            if((quantity <= get_base_quantity)){
+                            current_quantity = current_quantity + quantity;
+                            String update_quantity = "UPDATE products SET quantityInStock = quantityInStock - " + current_quantity +" WHERE productCode = '" +product_code +"'"; 
                             PreparedStatement update_ps = con.prepareStatement(update_quantity);
+                            update_ps.executeUpdate();
+
+                                System.out.println("You have ordered " +quantity+ " of this product");
+
+                              
+                                
+                                System.out.print("Do you want to buy another (Y/N): ");
+                                char y_or_n_loop = sc.next().charAt(0);
+                                if(y_or_n_loop == 'y' || y_or_n_loop == 'Y'){
+                                    System.out.println("Continuing...\n\n");
+
+                                }
+
+                                else{
+                                    LocalDateTime order_date_now = LocalDateTime.now();
+                                  
+                                    Date currentDate = Date.valueOf(order_date_now.toLocalDate());  
+                                   
+                                    
+                                    java.sql.Date req_date = null;
+                                
+                                    System.out.println("\nWhen is it required? (yyyy-MM-dd): ");
+                                    String input_req = sc.next();
+                                    
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    try{
+                                    java.util.Date input_date = dateFormat.parse(input_req);
+                                    java.sql.Date input_date_sql = new java.sql.Date(input_date.getTime());
+                                    req_date = input_date_sql;
+                                    } catch(ParseException e){
+                                        System.out.println("Invalid date format");
+                                    }
 
 
 
 
-                            int row_updated = update_ps.executeUpdate();
-                   
-                            if(row_updated > 0 && ((get_base_quantity - quantity) < get_base_quantity)){
-                                System.out.println("You have ordered " +quantity+ "of this product");
+
+                                    System.out.print("Any comments on order: ");
+                                    sc.nextLine();
+                                    String comments = sc.nextLine();
+
+                                    
+
+                                    
+                                    System.out.println("\nOrder Transaction ");
+                                    // show details of transaction:
+                                    String maxOrderNumber = "SELECT MAX(orderNumber) as max_order FROM orders";
+                                    Statement max_order = con.createStatement();
+                                    ResultSet max_order_rs =max_order.executeQuery(maxOrderNumber);
+                                   
+                                    if(max_order_rs.next()){
+                                      int get_max = max_order_rs.getInt("max_order");
+                                      System.out.println("Order Number: " + get_max);
+                                      System.out.println("Order date: " + currentDate);
+                                      System.out.println("Order required date: " + req_date);
+                                      System.out.println("Comments: " + comments);
+                                    
+                                      System.out.println("Do you want to complete transaction: ");
+                                      char end_transaction = sc.next().charAt(0);
+
+                                      if(end_transaction== 'y' || end_transaction == 'Y'){
+                                        String insert_order = "INSERT INTO orders " + "(orderNumber, orderDate, requiredDate, status, comments, customerNumber) VALUES (?, ?, ?, ?, ?, ?)";
+                                        PreparedStatement insert_order_ps = con.prepareStatement(insert_order);
+                                        insert_order_ps.setInt(1, get_max + 1);
+                                        insert_order_ps.setDate(2, currentDate);
+                                        insert_order_ps.setDate(3, req_date);
+                                        insert_order_ps.setString(4, "In Process");
+                                        insert_order_ps.setString(5, comments);
+                                        insert_order_ps.setInt(6, customer_code);
+                                        insert_order_ps.executeUpdate();
+
+                                        System.out.println("Transaction completed");
+                                            con.commit();
+                                            stopper = 0;
+                                        }
+                                        else{
+                                            System.out.println("Transaction rescinded. Doing rollback...");
+                                            con.rollback();
+                                            stopper = 0;
+                                        }
+
+                                    }
+                                    
+
+                                    
+                                }
+                                
                             }
                             else{
                                 System.out.println("Not enough quantity in stock for order");
+                              
                             }
+                        }
+
+
+
+
+                            //int row_updated = update_ps.executeUpdate();
+                   
 
                         }
                         
@@ -445,7 +543,7 @@ public class App_Methods {
                     
                 
 
-
+                }while(stopper == 1);
             }
 
             else{
@@ -457,7 +555,7 @@ public class App_Methods {
 
 
 
-
+            con.close();
         } catch(SQLException e){System.err.println("SQL Exception:");
         System.err.println("Message: " + e.getMessage());
         System.err.println("SQL State: " + e.getSQLState());

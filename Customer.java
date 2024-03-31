@@ -1,8 +1,6 @@
 import java.sql.*;
 import java.util.Scanner;
 
-import javax.swing.plaf.nimbus.State;
-
 public class Customer {
     private static Scanner sc = new Scanner(System.in);
 
@@ -141,34 +139,20 @@ public class Customer {
             ps.setInt(1, customerNo);
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next() == true){
-                customerNo = rs.getInt("customerNumber");
-                customerName = rs.getString("customerName");
-                contactLastName = rs.getString("contactLastName");
-                contactFirstName = rs.getString("contactFirstName");
-                phone = rs.getString("phone");
-                addressLine1 = rs.getString("addressLine1");
-                addressLine2 = (String) rs.getObject("addressLine2");
-                city = rs.getString("city");
-                state = (String) rs.getObject("state");
-                postalCode = (String) rs.getObject("postalCode");
-                country = rs.getString("country");
-                salesRepEmpNo = (Integer) rs.getObject("salesRepEmployeeNumber");
-                creditLimit = rs.getDouble("creditLimit");
-
-                System.out.println("customerNumber: " + customerNo);
-                System.out.println("customerName: " + customerName);
-                System.out.println("contactLastName: " + contactLastName);
-                System.out.println("contactFirstName: " + contactFirstName);
-                System.out.println("phone: " + phone);
-                System.out.println("addressLine1: " + addressLine1);
-                System.out.println("addressLine2: " + addressLine2);
-                System.out.println("city: " + city);
-                System.out.println("state: " + state);
-                System.out.println("postalCode: " + postalCode);
-                System.out.println("country: " + country);
-                System.out.println("salesRepEmployeeNumber: " + salesRepEmpNo);
-                System.out.println("creditLimit: " + creditLimit);
+            if(rs.next()){
+                System.out.println("customerNumber: " + rs.getInt("customerNumber"));
+                System.out.println("customerName: " + rs.getString("customerName"));
+                System.out.println("contactLastName: " + rs.getString("contactLastName"));
+                System.out.println("contactFirstName: " + rs.getString("contactFirstName"));
+                System.out.println("phone: " + rs.getString("phone"));
+                System.out.println("addressLine1: " + rs.getString("addressLine1"));
+                System.out.println("addressLine2: " + rs.getObject("addressLine2"));
+                System.out.println("city: " +  rs.getString("city"));
+                System.out.println("state: " + rs.getObject("state"));
+                System.out.println("postalCode: " + rs.getObject("postalCode"));
+                System.out.println("country: " + rs.getString("country"));
+                System.out.println("salesRepEmployeeNumber: " + rs.getObject("salesRepEmployeeNumber"));
+                System.out.println("creditLimit: " + rs.getDouble("creditLimit"));
 
                 System.out.print("\nWant to update this record? (Y/N): ");
                 char choice = sc.next().charAt(0);
@@ -271,54 +255,64 @@ public class Customer {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsales","root","12345");
 
 
-            System.out.print("Enter product code to view: ");
+            System.out.print("Enter customer number to view: ");
             customerNo = sc.nextInt();
                         sc.nextLine();
            
             String view = "SELECT * FROM customers WHERE customerNumber = ?";
-            //PreparedStatement ps = con.prepareStatement(view);
-            //ps.setInt(1, customerNo);
+            PreparedStatement ps1 = con.prepareStatement(view);
+            ps1.setInt(1, customerNo);
+            ResultSet rs1 = ps1.executeQuery();
 
-            //esultSet rs = ps.executeQuery();
-
-
-            System.out.print("Enter year to view: ");
-            String view_year = sc.next();
-
-            String view_record_given_year = "SELECT od.orderNumber, od.quantityOrdered, od.orderLineNumber, o.orderDate, o.customerNumber FROM products p RIGHT JOIN orderdetails od ON p.productCode = od.productCode "
-                                            + "RIGHT JOIN orders o ON od.orderNumber = o.orderNumber "
-                                            + "WHERE p.productCode = " + "'" + view_code +"'"
-                                            + "AND YEAR(orderDate) = " + view_year;
-
-            PreparedStatement view_record_year = con.prepareStatement(view_record_given_year);
-
-            //view_record_year.setString(1, view_code);
-
-            ResultSet view_given_year_rs = view_record_year.executeQuery();
-
-            if(view_given_year_rs.next()){
-            while (view_given_year_rs.next()) {
-                
-                String orderNumber = view_given_year_rs.getString("od.orderNumber");
-                String quantityOrder = view_given_year_rs.getString("od.quantityOrdered");
-                String orderLineNumber = view_given_year_rs.getString("od.orderLineNumber");
-                String orderDate = view_given_year_rs.getString("o.orderDate");
-                String customerNumber = view_given_year_rs.getString("o.customerNumber");
-
-                System.out.println("\nCustomer: " + customerNumber);
-                System.out.println("Order Number: "+ orderNumber);
-                System.out.println("Quantity Ordered" + quantityOrder);
-                System.out.println("Order Line Number: " + orderLineNumber);
-                System.out.println("Date Order made: " + orderDate + "\n");
-                
-                System.out.println("List generated... going back to main menu\n");
+            if(rs1.next()){
+                System.out.println("customerNumber: " + rs1.getInt("customerNumber"));
+                System.out.println("customerName: " + rs1.getString("customerName"));
+                System.out.println("contactLastName: " + rs1.getString("contactLastName"));
+                System.out.println("contactFirstName: " + rs1.getString("contactFirstName"));
+                System.out.println("phone: " + rs1.getString("phone"));
+                System.out.println("addressLine1: " + rs1.getString("addressLine1"));
+                System.out.println("addressLine2: " + rs1.getObject("addressLine2"));
+                System.out.println("city: " +  rs1.getString("city"));
+                System.out.println("state: " + rs1.getObject("state"));
+                System.out.println("postalCode: " + rs1.getObject("postalCode"));
+                System.out.println("country: " + rs1.getString("country"));
+                System.out.println("salesRepEmployeeNumber: " + rs1.getObject("salesRepEmployeeNumber"));
+                System.out.println("creditLimit: " + rs1.getDouble("creditLimit"));
             }
-        }
-            else{
-                System.out.println("No orders made during this year with this product\n");
+
+            System.out.println();
+            System.out.print("Enter year to view: ");
+            String year = sc.next();
+
+            String viewYear =   "SELECT o.orderNumber, o.orderDate, o.shippedDate, o.status" + 
+                                "\nFROM customers c  LEFT JOIN orders o on c.customerNumber = o.customerNumber "
+                                + "\nWHERE c.customerNumber = " + customerNo
+                                + "\nAND YEAR(orderDate) = " + year;
+
+            PreparedStatement ps2 = con.prepareStatement(viewYear, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs2 = ps2.executeQuery();
+            
+            if(rs2.next()){
+                rs2.beforeFirst();
+                while (rs2.next()) {   
+                    String orderNumber = rs2.getString("o.orderNumber");
+                    String orderDate = rs2.getString("o.orderDate");
+                    String shipDate = rs2.getString("o.shippedDate");
+                    String status = rs2.getString("o.status");
+                    
+                    System.out.println();
+                    System.out.println("Order Number: "+ orderNumber);
+                    System.out.println("Order Date:" + orderDate);
+                    System.out.println("Shipped Date: " + shipDate);
+                    System.out.println("Status: " + status + "\n");
+                }
+            } else {
+                System.out.println("No orders made during this year\n");
             }   
+            ps1.close();
+            ps2.close();
             con.close();
-        }catch(Exception e){
+        } catch (Exception e){
             System.out.println(e);
         }
     }

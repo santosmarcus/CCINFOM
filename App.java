@@ -118,7 +118,7 @@ public class App {
                                 Customer.deleteCustomer();
                                 break;
                             case 4:
-
+                                Customer.customerViewOrders();
                                 break;
                             default:
                                 System.out.println("===========================\n");

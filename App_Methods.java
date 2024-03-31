@@ -83,6 +83,8 @@ public class App_Methods {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/dbsales","root","12345");
 
+        
+
         String query_test = "SELECT * FROM products WHERE productCode = ?";
         PreparedStatement ps_stmt = con.prepareStatement(query_test);
        

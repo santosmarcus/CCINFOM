@@ -243,13 +243,31 @@ public class App {
                         break;
                 
                     case 2: //payment
+                        System.out.println("\n1. Create a new Payment");
+                        System.out.println("2. Update a Payment");
+                        System.out.println("3. Delete a Payment\n");
+                        System.out.println("===========================");
+                        System.out.print("Enter choice: ");
+                        int payment_input = sc.nextInt();
+                        switch (payment_input) {
+                            case 1:
+                                Payments.createPayment();
+                                break;
+                        
+                            case 2:
+                                Payments.updatePayment();
+                                break;
 
+                            case 3:
+                                Payments.deletePayment();
+                                break;
 
+                            default:
+                                System.out.println("===========================\n");
+                                System.out.println("Invalid choice. Going back to main menu\n");
+                                break;
+                        }
                         break;
-
-
-
-
 
                     default:
                         System.out.println("===========================\n");

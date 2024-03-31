@@ -21,7 +21,6 @@ public class App {
    
     int stopper = 1;
     while(stopper == 1){
-
         System.out.println("===========================");
         System.out.println("MAIN MENU");
         System.out.println("===========================\n");
@@ -113,10 +112,10 @@ public class App {
                                 break;
 
                             case 2:
-
+                                Customer.updateCustomer();
                                 break;
                             case 3:
-
+                                Customer.deleteCustomer();
                                 break;
                             case 4:
 

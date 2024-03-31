@@ -77,39 +77,24 @@ public class App_Methods {
     public static void product_update(){
         
    
-        Statement st_for_noOfCols = null;
-        ResultSet rs_for_noOfCols = null;
         ResultSet rs_for_query = null;
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/dbsales","root","12345"
-            );
-
-        String query_for_cols = "SELECT * FROM products";
-        
-        st_for_noOfCols = con.createStatement();
-        rs_for_noOfCols = st_for_noOfCols.executeQuery(query_for_cols);
-
-        ResultSetMetaData rsmd = (ResultSetMetaData) rs_for_noOfCols.getMetaData();
-        int no_of_cols = rsmd.getColumnCount();
-        
-        System.out.println("Number of columns: " + no_of_cols);
+            Connection con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/dbsales","root","12345");
 
         String query_test = "SELECT * FROM products WHERE productCode = ?";
         PreparedStatement ps_stmt = con.prepareStatement(query_test);
        
         System.out.print("Enter product code: ");
         String product_code = sc.next();
+
         ps_stmt.setString(1, product_code);
         rs_for_query = ps_stmt.executeQuery();
         boolean isTrue = true;
 
-        
-       
             //if statement for found record
-            if(isTrue == rs_for_query.next()){
+            if(true == rs_for_query.next()){
           
                 //rs_for_query = ps_stmt.executeQuery();
                 do{
@@ -199,8 +184,7 @@ public class App_Methods {
                 else{
                     System.out.println("\nNot updating...\n");
                 }
-            }    
-            else{    // produces the entire record
+            } else {    // produces the entire record
                 System.out.println("\nRecord does not exist. Going back to main menu...\n");
             }
          con.close();

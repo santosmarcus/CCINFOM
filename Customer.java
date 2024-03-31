@@ -10,7 +10,7 @@ public class Customer {
     private static String customerName;
     private static String contactLastName;
     private static String contactFirstName;
-    private static String contactNo;
+    private static String phone;
     private static String addressLine1;
     private static String addressLine2;
     private static String city;
@@ -41,7 +41,7 @@ public class Customer {
             contactFirstName = sc.nextLine();
 
             System.out.print("Enter contact number: ");
-            contactNo = sc.nextLine();
+            phone = sc.nextLine();
 
             System.out.print("Enter address line 1: ");
             addressLine1 = sc.nextLine();
@@ -75,28 +75,28 @@ public class Customer {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsales","root","12345");
 
-                PreparedStatement stmt;
+                PreparedStatement ps;
                 String add = "INSERT INTO customers " + "(customerNumber, customerName, contactLastName, contactFirstName, phone," +  
                                                         "addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit) " + 
                                                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                stmt = con.prepareStatement(add);
+                ps = con.prepareStatement(add);
 
-                stmt.setInt(1, customerNo);
-                stmt.setString(2, customerName);
-                stmt.setString(3, contactLastName);
-                stmt.setString(4, contactFirstName);
-                stmt.setString(5, contactNo);
-                stmt.setString(6, addressLine1);
-                stmt.setObject(7, addressLine2, Types.VARCHAR);
-                stmt.setString(8, city);
-                stmt.setObject(9, state, Types.VARCHAR);
-                stmt.setObject(10, postalCode, Types.VARCHAR);
-                stmt.setString(11, country);
-                stmt.setObject(12, salesRepEmpNo, Types.INTEGER);
-                stmt.setDouble(13, creditLimit);
+                ps.setInt(1, customerNo);
+                ps.setString(2, customerName);
+                ps.setString(3, contactLastName);
+                ps.setString(4, contactFirstName);
+                ps.setString(5, phone);
+                ps.setString(6, addressLine1);
+                ps.setObject(7, addressLine2, Types.VARCHAR);
+                ps.setString(8, city);
+                ps.setObject(9, state, Types.VARCHAR);
+                ps.setObject(10, postalCode, Types.VARCHAR);
+                ps.setString(11, country);
+                ps.setObject(12, salesRepEmpNo, Types.INTEGER);
+                ps.setDouble(13, creditLimit);
 
-                int x = stmt.executeUpdate();
+                int x = ps.executeUpdate();
 
                 if (x > 0){
                     System.out.println("\nSuccessfully inserted\n");
@@ -104,58 +104,222 @@ public class Customer {
                     System.out.println("Not inserted\n");
                 }
 
-                stmt.close();
+                ps.close();
                 con.close();
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
 
             System.out.print("Insert another record (Y/N): ");
-            char insert_loop = sc.next().charAt(0);
+            char stop = sc.next().charAt(0);
 
-            if (insert_loop == 'n' || insert_loop == 'N'){
+            if (stop == 'n' || stop == 'N'){
                 stopper = 0;
             } else {
                 System.out.println();
             }
-
         } while (stopper == 1);
     }
 
     public static void updateCustomer(){
 
-        //Statement st_for_noOfCols = null;
-        //ResultSet rs_for_noOfCols = null;
-        //ResultSet rs_for_query = null;
+        System.out.println("===========================");
+        System.out.println("      UPDATE CUSTOMER      ");
+        System.out.println("===========================\n");
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsales","root","12345");
-
-            String selectCol = "SELECT * FROM products WHERE customerNumber = ?";
-            PreparedStatement pstmt = con.prepareStatement(selectCol);
+        
+            String selectCol = "SELECT * FROM customers WHERE customerNumber = ?";
+            PreparedStatement ps = con.prepareStatement(selectCol);
 
             System.out.print("Enter customer number: ");
             int customerNo = sc.nextInt();
                             sc.nextLine();
 
-            pstmt.setInt(1, customerNo);
+            ps.setInt(1, customerNo);
+            ResultSet rs = ps.executeQuery();
 
-            ResultSet rs = pstmt.executeQuery(selectCol);
+            if(rs.next() == true){
+                customerNo = rs.getInt("customerNumber");
+                customerName = rs.getString("customerName");
+                contactLastName = rs.getString("contactLastName");
+                contactFirstName = rs.getString("contactFirstName");
+                phone = rs.getString("phone");
+                addressLine1 = rs.getString("addressLine1");
+                addressLine2 = (String) rs.getObject("addressLine2");
+                city = rs.getString("city");
+                state = (String) rs.getObject("state");
+                postalCode = (String) rs.getObject("postalCode");
+                country = rs.getString("country");
+                salesRepEmpNo = (Integer) rs.getObject("salesRepEmployeeNumber");
+                creditLimit = rs.getDouble("creditLimit");
 
-            if (){
-                while(rs.next()){
+                System.out.println("customerNumber: " + customerNo);
+                System.out.println("customerName: " + customerName);
+                System.out.println("contactLastName: " + contactLastName);
+                System.out.println("contactFirstName: " + contactFirstName);
+                System.out.println("phone: " + phone);
+                System.out.println("addressLine1: " + addressLine1);
+                System.out.println("addressLine2: " + addressLine2);
+                System.out.println("city: " + city);
+                System.out.println("state: " + state);
+                System.out.println("postalCode: " + postalCode);
+                System.out.println("country: " + country);
+                System.out.println("salesRepEmployeeNumber: " + salesRepEmpNo);
+                System.out.println("creditLimit: " + creditLimit);
 
-                            }
-            } else {
+                System.out.print("\nWant to update this record? (Y/N): ");
+                char choice = sc.next().charAt(0);
+
+                if (choice == 'y' || choice == 'Y'){
+
+                    int stopper = 1;
+                    do{
+                        System.out.print("Enter column name to update: ");
+                        String col_name = sc.next();
+                        System.out.print("Enter updated value: ");
+                        String new_value = sc.next();
+                 
+                        String updateQuery = "UPDATE customers SET " + col_name + " = ? " + "WHERE  customerNumber = ?";
+                        PreparedStatement updatePs = con.prepareStatement(updateQuery);
+                        updatePs.setString(1, new_value);     
+                        updatePs.setInt(2, customerNo);
+
+                        int x = updatePs.executeUpdate(); 
+
+                        if(x == 1){
+                            System.out.println("\nRecord updated\n");
+                            System.out.print("Do you still want to keep updating the record "+ customerName +" (Y/N): ");
+                            char stop = sc.next().charAt(0);
+
+                            if(stop == 'n' || stop == 'N'){
+                                stopper = 0;
+                            } 
+                        } else {System.out.println("Error updating\n");}
+                        updatePs.close();
+                    } while (stopper == 1); 
+                } else {
+                    System.out.println("\nNot updating...\n");
+                }
+            } else { 
                 System.out.println("\nRecord does not exist. Going back to main menu...\n");
             }
-
-            
-
-
+            ps.close();
+            con.close();
         } catch (Exception e){
             System.out.println(e.getMessage());
+        }
+    }
+
+    public static void deleteCustomer(){
+        System.out.println("===========================");
+        System.out.println("      DELETE CUSTOMER      ");
+        System.out.println("===========================\n");
+
+        int stopper = 1;
+        do{
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsales","root","12345");
+                
+                System.out.print("Enter column to search for value of deletion: ");
+                String col_name = sc.next();
+    
+                System.out.print("Enter value to delete: ");
+                String value = sc.next();
+
+                String delete = "DELETE FROM customers WHERE " + col_name + "= ?";
+                PreparedStatement ps = con.prepareStatement(delete);
+
+                ps.setString(1, value);
+
+                int x = ps.executeUpdate();
+
+                if(x > 0){
+                    System.out.println("Record " + value +" deleted successfully\n");
+                } else {
+                    System.out.println("Record does not exist or cannot be deleted\n");
+                }
+
+                System.out.println("Do you want to delete another record? (Y/N):  ");
+                char stop = sc.next().charAt(0);
+
+                if(stop == 'n' || stop == 'N'){
+                    stopper = 0;
+                }
+                ps.close();
+                con.close();
+            } catch(SQLException e){
+                if(e.getErrorCode() == 1451){
+                    System.out.println("Error: Cannot delete record because it is being used as a reference by other records");
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } while (stopper == 1);
+    }
+
+    public static void customerViewOrders(){
+        System.out.println("===========================");
+        System.out.println("    VIEW CUSTOMER ORDERS   ");
+        System.out.println("===========================\n");
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbsales","root","12345");
+
+
+            System.out.print("Enter product code to view: ");
+            customerNo = sc.nextInt();
+                        sc.nextLine();
+           
+            String view = "SELECT * FROM customers WHERE customerNumber = ?";
+            //PreparedStatement ps = con.prepareStatement(view);
+            //ps.setInt(1, customerNo);
+
+            //esultSet rs = ps.executeQuery();
+
+
+            System.out.print("Enter year to view: ");
+            String view_year = sc.next();
+
+            String view_record_given_year = "SELECT od.orderNumber, od.quantityOrdered, od.orderLineNumber, o.orderDate, o.customerNumber FROM products p RIGHT JOIN orderdetails od ON p.productCode = od.productCode "
+                                            + "RIGHT JOIN orders o ON od.orderNumber = o.orderNumber "
+                                            + "WHERE p.productCode = " + "'" + view_code +"'"
+                                            + "AND YEAR(orderDate) = " + view_year;
+
+            PreparedStatement view_record_year = con.prepareStatement(view_record_given_year);
+
+            //view_record_year.setString(1, view_code);
+
+            ResultSet view_given_year_rs = view_record_year.executeQuery();
+
+            if(view_given_year_rs.next()){
+            while (view_given_year_rs.next()) {
+                
+                String orderNumber = view_given_year_rs.getString("od.orderNumber");
+                String quantityOrder = view_given_year_rs.getString("od.quantityOrdered");
+                String orderLineNumber = view_given_year_rs.getString("od.orderLineNumber");
+                String orderDate = view_given_year_rs.getString("o.orderDate");
+                String customerNumber = view_given_year_rs.getString("o.customerNumber");
+
+                System.out.println("\nCustomer: " + customerNumber);
+                System.out.println("Order Number: "+ orderNumber);
+                System.out.println("Quantity Ordered" + quantityOrder);
+                System.out.println("Order Line Number: " + orderLineNumber);
+                System.out.println("Date Order made: " + orderDate + "\n");
+                
+                System.out.println("List generated... going back to main menu\n");
+            }
+        }
+            else{
+                System.out.println("No orders made during this year with this product\n");
+            }   
+            con.close();
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 }

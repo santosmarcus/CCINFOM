@@ -133,7 +133,7 @@ public class Customer {
             PreparedStatement ps = con.prepareStatement(selectCol);
 
             System.out.print("Enter customer number: ");
-            int customerNo = sc.nextInt();
+            customerNo = sc.nextInt();
                             sc.nextLine();
 
             ps.setInt(1, customerNo);
@@ -175,7 +175,7 @@ public class Customer {
 
                         if(x == 1){
                             System.out.println("\nRecord updated\n");
-                            System.out.print("Do you still want to keep updating the record "+ customerName +" (Y/N): ");
+                            System.out.print("Do you still want to keep updating the record "+ customerNo +" (Y/N): ");
                             char stop = sc.next().charAt(0);
 
                             if(stop == 'n' || stop == 'N'){
